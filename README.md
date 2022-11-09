@@ -166,6 +166,7 @@ Westalis (DHCP Server)
  apt-get update
  apt-get install isc-dhcp-server -y
 ```
+### 1. Westalis (DHCP Server)
 
 buat script untuk menampung interfaces eth0, `soal1.sh`:
 <code>cp /etc/default/isc-dhcp-server soal1.sh</code>
