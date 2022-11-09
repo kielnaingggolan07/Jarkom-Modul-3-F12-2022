@@ -644,5 +644,5 @@ lakukan <code>service squid restart</code>
 untuk melakukan testing maka lakukan :
 ```
 apt-get update
-apt install speedtest-cli`
+apt-get install speedtest-cli
 ```
