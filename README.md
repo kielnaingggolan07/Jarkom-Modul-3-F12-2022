@@ -641,3 +641,8 @@ include /etc/squid/acl-bandwidth.conf
 ```
 
 lakukan <code>service squid restart</code>
+untuk melakukan testing maka lakukan :
+```
+apt-get update
+apt install speedtest-cli`
+```
