@@ -472,48 +472,24 @@ hwaddress ether 7a:76:36:74:f5:48
 ```
 kemudian lakukan  <code>cp /etc/network/interfaces soal8.sh</code>
 
-### 8. SSS, Garden, dan Eden digunakan sebagai client Proxy agar pertukaran informasi dapat terjamin keamanannya, juga untuk mencegah kebocoran data.
+### 8. (A) Jadikan Berlint sebagai Proxy Server sehingga dapat mengakses internet.
 
-```
-Note: Sebelum melakukan konfigurasi proxy pada client, server proxy harus dikonfigurasi terlebih dahulu (no. 9 dan seterusnya).
-```
-
-Konfigurasi Client Proxy SSS
-
-```
-export http_proxy="http://192.205.2.3:8080"
-```
-
-Konfigurasi Client Proxy Garden
-
-```
-export http_proxy="http://192.205.2.3:8080"
-```
-
-Konfigurasi Client Proxy Eden
-
-```
-export http_proxy="http://192.205.2.3:8080"
-```
-
-### 9. Jadikan Berlint sebagai Proxy Server sehingga dapat mengakses internet.
-
-9.1 setelah menginstall squid <strong>Berlint</strong> kemudian lakukan:
+8.1 setelah menginstall squid <strong>Berlint</strong> kemudian lakukan:
 
 ```
 service squid start
 service squid status
 ```
 
-9.2 Konfigurasi squid
+8.2 Konfigurasi squid
 
-9.2.1 backup file config default squid
+8.2.1 backup file config default squid
 
 ```
 mv /etc/squid/squid.conf /etc/squid/squid.conf.bak
 ```
 
-9.2.2 buat konfigurasi squid baru pada file /etc/squid/squid.conf pada file config baru dengan command
+8.2.2 buat konfigurasi squid baru pada file /etc/squid/squid.conf pada file config baru dengan command
 
 ```
 nano /etc/squid/squid.conf
@@ -526,13 +502,13 @@ http_port 8080
 visible_hostname Berlint
 ```
 
-9.3 restart squid
+8.3 restart squid
 
 ```
 service squid restart
 ```
 
-### 10. Client hanya dapat mengakses internet di luar hari dan jam kerja (senin-jumat 08:00 - 17:00) dan hari libur (dapat mengakses 24 jam penuh)
+### 8. (B) Client hanya dapat mengakses internet di luar hari dan jam kerja (senin-jumat 08:00 - 17:00) dan hari libur (dapat mengakses 24 jam penuh)
 
 <strong>Berlint</strong>
 
@@ -552,7 +528,7 @@ visible_hostname Berlint
 
 dan lakukan <code>service squid restart</code>
 
-### 11. client hanya dapat mengakses domain loid-work.com dan franky-work.com (IP tujuan domain dibebaskan). Saat akses internet dibuka, client dilarang untuk mengakses web tanpa HTTPS. (Contoh web HTTP: http://example.com)
+### 9. client hanya dapat mengakses domain loid-work.com dan franky-work.com (IP tujuan domain dibebaskan). 
 
 <strong>WISE</strong>
 
@@ -619,7 +595,10 @@ http_access allow all
 
 dan lakukan <code>service squid restart</code>
 
-### 12. Agar menghemat penggunaan, akses internet dibatasi dengan kecepatan maksimum 128 Kbps pada setiap host (Kbps = kilobit per second; lakukan pengecekan pada tiap host, ketika 2 host akses internet pada saat bersamaan, keduanya mendapatkan speed maksimal yaitu 128 Kbps)
+### 10. Saat akses internet dibuka, client dilarang untuk mengakses web tanpa HTTPS. (Contoh web HTTP: http://example.com)
+
+
+### 11 & 12. Agar menghemat penggunaan, akses internet dibatasi dengan kecepatan maksimum 128 Kbps pada setiap host (Kbps = kilobit per second; lakukan pengecekan pada tiap host, ketika 2 host akses internet pada saat bersamaan, keduanya mendapatkan speed maksimal yaitu 128 Kbps). Setelah diterapkan, ternyata peraturan nomor (4) mengganggu produktifitas saat hari kerja, dengan demikian pembatasan kecepatan hanya diberlakukan untuk pengaksesan internet pada hari libur
 
 <strong>Berlin</strong>
 
