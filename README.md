@@ -472,9 +472,10 @@ hwaddress ether 7a:76:36:74:f5:48
 ```
 kemudian lakukan  <code>cp /etc/network/interfaces soal8.sh</code>
 
-### 8. (A) Jadikan Berlint sebagai Proxy Server sehingga dapat mengakses internet.
+### 8. Client hanya dapat mengakses internet di luar hari dan jam kerja (senin-jumat 08:00 - 17:00) dan hari libur (dapat mengakses 24 jam penuh)
 
-8.1 setelah menginstall squid <strong>Berlint</strong> kemudian lakukan:
+8A. Jadikan Berlint sebagai Proxy Server sehingga dapat mengakses internet.
+setelah menginstall squid <strong>Berlint</strong> kemudian lakukan:
 
 ```
 service squid start
@@ -508,7 +509,7 @@ visible_hostname Berlint
 service squid restart
 ```
 
-### 8. (B) Client hanya dapat mengakses internet di luar hari dan jam kerja (senin-jumat 08:00 - 17:00) dan hari libur (dapat mengakses 24 jam penuh)
+8B. setelah kita membuat Berlint sebagai proxy server, selanjutnya kita atur agar client hanya dapat mengakses internet di luar hari dan jam kerja (senin-jumat 08:00 - 17:00) dan hari libur (dapat mengakses 24 jam penuh)
 
 <strong>Berlint</strong>
 
@@ -516,9 +517,11 @@ service squid restart
 
 ```
 acl UNAVAILABLE_WORKING time MTWHF 08:00-17:00
+```
 
 nano /etc/squid/squid.conf dan masukan
 
+```
 include /etc/squid/acl.conf
 http_port 8080
 http_access deny UNAVAILABLE_WORKING
@@ -584,19 +587,56 @@ www IN CNAME franky-work.com.
 
 <strong>Berlint</strong>
 
+<code>nano /etc/squid/acl.conf</code> dan tambahkan
+
+```
+acl AVAILABLE_WORKING time MTWHF 08:00-17:00
+```
+
 <code>nano /etc/squid/squid.conf</code> dan tambahkan
 
 ```
-http_port 5000
+http_port 8080
 visible_hostname loid-work.com
 visible_hostname franky-work.com
-http_access allow all
+http_access allow AVAILABLE_WORKING
 ```
-
 dan lakukan <code>service squid restart</code>
+
+kemudian dalam client `sss` lakukan:
+```
+export http_proxy="http://192.205.2.3:8080
+lynx loid-work.com
+lynx franky-work.com
+```
 
 ### 10. Saat akses internet dibuka, client dilarang untuk mengakses web tanpa HTTPS. (Contoh web HTTP: http://example.com)
 
+<strong>Berlint</strong>
+
+<code>nano /etc/squid/acl.conf</code> dan tambahkan
+
+```
+acl UNAVAILABLE_WORKING time MTWHF 08:00-17:00
+```
+
+nano /etc/squid/squid.conf dan masukan
+
+```
+include /etc/squid/acl.conf
+http_port 443
+http_access deny UNAVAILABLE_WORKING
+http_access allow all
+visible_hostname Berlint
+```
+dan lakukan <code>service squid restart</code>
+
+kemudian dalam client `sss` lakukan:
+```
+export http_proxy="http://192.205.2.3:8080
+lynx http://example.com
+lynx hhtps://example.com
+```
 
 ### 11 & 12. Agar menghemat penggunaan, akses internet dibatasi dengan kecepatan maksimum 128 Kbps pada setiap host (Kbps = kilobit per second; lakukan pengecekan pada tiap host, ketika 2 host akses internet pada saat bersamaan, keduanya mendapatkan speed maksimal yaitu 128 Kbps). Setelah diterapkan, ternyata peraturan nomor (4) mengganggu produktifitas saat hari kerja, dengan demikian pembatasan kecepatan hanya diberlakukan untuk pengaksesan internet pada hari libur
 
